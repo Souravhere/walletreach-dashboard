@@ -112,56 +112,59 @@ export default function CSVUploader({ onUploadSuccess, onError }: CSVUploaderPro
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                     >
-                        <Card
-                            variant="glass"
-                            padding="lg"
-                            className={`
-                border-2 border-dashed transition-all duration-200
-                ${isDragging
-                                    ? 'border-white bg-white/10'
-                                    : 'border-[var(--border-default)] hover:border-[var(--border-strong)]'
-                                }
-              `}
+                        <div
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
                             onDrop={handleDrop}
                         >
-                            <div className="text-center py-8">
-                                <motion.div
-                                    animate={isDragging ? { scale: 1.1 } : { scale: 1 }}
-                                    className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--bg-elevated)] mb-4"
-                                >
-                                    <FiUpload className="w-8 h-8 text-[var(--text-secondary)]" />
-                                </motion.div>
-
-                                <h3 className="text-lg font-semibold mb-2">
-                                    {isDragging ? 'Drop CSV file here' : 'Upload Wallet Addresses'}
-                                </h3>
-                                <p className="text-sm text-[var(--text-tertiary)] mb-6">
-                                    Drag & drop your CSV file or browse to upload
-                                </p>
-
-                                <div className="flex items-center justify-center gap-3">
-                                    <Button
-                                        variant="primary"
-                                        size="md"
-                                        onClick={handleBrowseClick}
-                                        isLoading={isUploading}
+                            <Card
+                                variant="glass"
+                                padding="lg"
+                                className={`
+                border-2 border-dashed transition-all duration-200
+                ${isDragging
+                                        ? 'border-white bg-white/10'
+                                        : 'border-[var(--border-default)] hover:border-[var(--border-strong)]'
+                                    }
+              `}
+                            >
+                                <div className="text-center py-8">
+                                    <motion.div
+                                        animate={isDragging ? { scale: 1.1 } : { scale: 1 }}
+                                        className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--bg-elevated)] mb-4"
                                     >
-                                        Browse Files
-                                    </Button>
-                                </div>
+                                        <FiUpload className="w-8 h-8 text-[var(--text-secondary)]" />
+                                    </motion.div>
 
-                                <div className="mt-6 pt-6 border-t border-[var(--border-subtle)]">
-                                    <p className="text-xs text-[var(--text-tertiary)] mb-2">
-                                        <strong>Format:</strong> CSV/TSV with wallet addresses in first column
+                                    <h3 className="text-lg font-semibold mb-2">
+                                        {isDragging ? 'Drop CSV file here' : 'Upload Wallet Addresses'}
+                                    </h3>
+                                    <p className="text-sm text-[var(--text-tertiary)] mb-6">
+                                        Drag & drop your CSV file or browse to upload
                                     </p>
-                                    <p className="text-xs text-[var(--text-tertiary)]">
-                                        <strong>Max:</strong> 10,000 addresses • <strong>File size:</strong> Up to 5MB
-                                    </p>
+
+                                    <div className="flex items-center justify-center gap-3">
+                                        <Button
+                                            variant="primary"
+                                            size="md"
+                                            onClick={handleBrowseClick}
+                                            isLoading={isUploading}
+                                        >
+                                            Browse Files
+                                        </Button>
+                                    </div>
+
+                                    <div className="mt-6 pt-6 border-t border-[var(--border-subtle)]">
+                                        <p className="text-xs text-[var(--text-tertiary)] mb-2">
+                                            <strong>Format:</strong> CSV/TSV with wallet addresses in first column
+                                        </p>
+                                        <p className="text-xs text-[var(--text-tertiary)]">
+                                            <strong>Max:</strong> 10,000 addresses • <strong>File size:</strong> Up to 5MB
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </Card>
+                            </Card>
+                        </div>
 
                         <input
                             ref={fileInputRef}
