@@ -24,7 +24,7 @@ export default function LogsPage() {
         try {
             const response = activeTab === 'transactions'
                 ? await logsAPI.getTransactions()
-                : await logsAPI.getAuditLogs();
+                : await logsAPI.getAudit();
             setLogs(response.data.logs || response.data.transactions || []);
         } catch (error: any) {
             setError(error.response?.data?.error || 'Failed to fetch logs');
