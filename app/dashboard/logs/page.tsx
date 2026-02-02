@@ -120,7 +120,7 @@ export default function LogsPage() {
                                                 </td>
                                                 <td className="py-3 px-4">{formatTokenAmount(log.amount)} tokens</td>
                                                 <td className="py-3 px-4">
-                                                    <Badge variant={log.status === 'success' ? 'active' : 'failed'}>
+                                                    <Badge variant={log.status === 'success' ? 'success' : 'error'}>
                                                         {log.status}
                                                     </Badge>
                                                 </td>

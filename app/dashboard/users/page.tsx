@@ -151,17 +151,17 @@ export default function UsersPage() {
                                         <td className="py-3 px-4 font-medium">{user.username}</td>
                                         <td className="py-3 px-4 text-muted-foreground">{user.email}</td>
                                         <td className="py-3 px-4">
-                                            <Badge variant={user.role === 'super_admin' ? 'active' : 'default'}>
+                                            <Badge variant={user.role === 'super_admin' ? 'success' : 'default'}>
                                                 {user.role.replace('_', ' ')}
                                             </Badge>
                                         </td>
                                         <td className="py-3 px-4">
                                             {user.isLocked ? (
-                                                <Badge variant="failed">Locked</Badge>
+                                                <Badge variant="error">Locked</Badge>
                                             ) : user.isActive ? (
-                                                <Badge variant="active">Active</Badge>
+                                                <Badge variant="success">Active</Badge>
                                             ) : (
-                                                <Badge variant="stopped">Inactive</Badge>
+                                                <Badge variant="default">Inactive</Badge>
                                             )}
                                         </td>
                                         <td className="py-3 px-4">

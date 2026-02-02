@@ -110,7 +110,7 @@ export default function DashboardPage() {
                                                 {campaign.progress.successfulTx} successful
                                             </div>
                                         </div>
-                                        <Badge variant="active">Running</Badge>
+                                        <Badge variant="success">Running</Badge>
                                     </div>
                                 </motion.div>
                             ))}

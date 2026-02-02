@@ -157,7 +157,7 @@ export default function WalletsPage() {
                                                 {wallet.address.slice(0, 10)}...{wallet.address.slice(-8)}
                                             </p>
                                         </div>
-                                        <Badge variant={wallet.isActive ? 'active' : 'stopped'}>
+                                        <Badge variant={wallet.isActive ? 'success' : 'default'}>
                                             {wallet.isActive ? 'Active' : 'Inactive'}
                                         </Badge>
                                     </div>
