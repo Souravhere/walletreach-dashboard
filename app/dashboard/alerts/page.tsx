@@ -52,9 +52,9 @@ export default function AlertsPage() {
 
     const getAlertVariant = (type: string) => {
         switch (type) {
-            case 'info': return 'default';
-            case 'warning': return 'paused';
-            case 'critical': return 'failed';
+            case 'info': return 'info';
+            case 'warning': return 'warning';
+            case 'critical': return 'error';
             default: return 'default';
         }
     };
