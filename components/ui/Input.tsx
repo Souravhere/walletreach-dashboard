@@ -57,7 +57,7 @@ export default function Input({
                 )}
 
                 {/* Input */}
-                <motion.input
+                <input
                     type={inputType}
                     className={`
             w-full rounded-lg
@@ -76,10 +76,6 @@ export default function Input({
           `}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    animate={{
-                        scale: isFocused ? 1.01 : 1,
-                    }}
-                    transition={{ duration: 0.2 }}
                     {...props}
                 />
 
