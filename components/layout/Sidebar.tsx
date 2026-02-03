@@ -19,6 +19,7 @@ import {
     RiCheckboxCircleFill
 } from 'react-icons/ri';
 import { GiTargeting } from "react-icons/gi";
+import Image from 'next/image';
 // --- Types ---
 interface NavItem {
     name: string;
@@ -57,12 +58,9 @@ export default function Sidebar() {
             {/* Header */}
             <div className="h-24 flex items-center px-8">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(255,255,255,0.1)]">
-                        <RiCheckboxCircleFill className="text-black text-2xl" />
-                    </div>
+                    <Image src="/logo.svg" alt="Logo" width={40} height={40} quality={100}/>
                     <div className="flex flex-col">
                         <span className="font-bold text-lg tracking-tight leading-none">WalletReach</span>
-                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Premium Engine</span>
                     </div>
                 </div>
             </div>
