@@ -22,6 +22,9 @@ import {
     FiClock
 } from 'react-icons/fi';
 import { RiTimerFlashLine } from 'react-icons/ri';
+import { FiGift } from 'react-icons/fi';
+import Select from '@/components/ui/Select';
+import DiscreteAmountBuilder from '@/components/campaigns/DiscreteAmountBuilder';
 
 export default function AdvancedCampaignsPage() {
     const router = useRouter();
@@ -42,6 +45,14 @@ export default function AdvancedCampaignsPage() {
         uploadedFile: null as File | null,
         recipients: [] as string[],
         senderWallets: [] as string[],
+        rewardConfig: {
+            mode: 'random_range' as 'random_range' | 'discrete_list',
+            randomRange: {
+                min: 10,
+                max: 100,
+            },
+            discreteAmounts: [] as number[],
+        },
     });
 
     // Validation Results (for CSV)
@@ -192,10 +203,7 @@ export default function AdvancedCampaignsPage() {
                     startDate: new Date(),
                     endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
                 },
-                rewardConfig: {
-                    mode: 'random_range',
-                    randomRange: { min: 10, max: 100 }
-                },
+                rewardConfig: formData.rewardConfig,
                 filters: {
                     excludeContracts: true,
                     excludeExistingHolders: true,
@@ -321,6 +329,81 @@ export default function AdvancedCampaignsPage() {
                                             <p className="text-xs text-purple-400/60 mt-3">
                                                 * Transactions will be spaced randomly between {formData.minInterval} and {formData.maxInterval} minutes.
                                             </p>
+                                        </div>
+
+                                        {/* Distribution Schema */}
+                                        <div className="md:col-span-2 border border-white/10 rounded-xl p-6 bg-white/[0.02]">
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <FiGift className="text-purple-400" />
+                                                <h4 className="text-sm font-medium">Token Allocation Methodology</h4>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2 text-white/80">
+                                                        Distribution Mode
+                                                    </label>
+                                                    <Select
+                                                        value={formData.rewardConfig.mode}
+                                                        onChange={(e) => setFormData({
+                                                            ...formData,
+                                                            rewardConfig: { ...formData.rewardConfig, mode: e.target.value as any }
+                                                        })}
+                                                        options={[
+                                                            { value: 'random_range', label: 'Random Range (Min - Max)' },
+                                                            { value: 'discrete_list', label: 'Discrete Value Selection' }
+                                                        ]}
+                                                        className="bg-white/5 border-white/10"
+                                                    />
+                                                </div>
+
+                                                {formData.rewardConfig.mode === 'random_range' ? (
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <div>
+                                                            <label className="block text-xs text-white/60 mb-1">Min Amount</label>
+                                                            <Input
+                                                                type="number"
+                                                                value={formData.rewardConfig.randomRange.min}
+                                                                onChange={(e) => setFormData({
+                                                                    ...formData,
+                                                                    rewardConfig: {
+                                                                        ...formData.rewardConfig,
+                                                                        randomRange: { ...formData.rewardConfig.randomRange, min: parseInt(e.target.value) || 0 }
+                                                                    }
+                                                                })}
+                                                                min="0"
+                                                                fullWidth
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs text-white/60 mb-1">Max Amount</label>
+                                                            <Input
+                                                                type="number"
+                                                                value={formData.rewardConfig.randomRange.max}
+                                                                onChange={(e) => setFormData({
+                                                                    ...formData,
+                                                                    rewardConfig: {
+                                                                        ...formData.rewardConfig,
+                                                                        randomRange: { ...formData.rewardConfig.randomRange, max: parseInt(e.target.value) || 0 }
+                                                                    }
+                                                                })}
+                                                                min="0"
+                                                                fullWidth
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="mt-4">
+                                                        <DiscreteAmountBuilder
+                                                            amounts={formData.rewardConfig.discreteAmounts}
+                                                            onChange={(amounts) => setFormData({
+                                                                ...formData,
+                                                                rewardConfig: { ...formData.rewardConfig, discreteAmounts: amounts }
+                                                            })}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
