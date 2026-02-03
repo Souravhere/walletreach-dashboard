@@ -123,7 +123,7 @@ export default function Sidebar() {
             {/* MOBILE TOGGLE BUTTON */}
             <button 
                 onClick={() => setIsOpen(true)}
-                className="fixed top-6 left-6 z-40 p-3 bg-black border border-white/10 rounded-2xl text-white md:hidden shadow-2xl"
+                className="fixed bottom-4 right-4 z-50 p-3 bg-black border border-white/10 rounded-2xl text-white md:hidden shadow-2xl"
             >
                 <RiMenu4Fill size={24} />
             </button>
@@ -153,12 +153,12 @@ export default function Sidebar() {
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                             className="fixed left-0 top-0 h-screen w-[85%] max-w-[320px] z-[70] md:hidden shadow-2xl"
                         >
-                            <button 
+                            {/* <button 
                                 onClick={() => setIsOpen(false)}
                                 className="absolute top-6 right-[-50px] text-white"
                             >
                                 <RiCloseFill size={32} />
-                            </button>
+                            </button> */}
                             <NavContent />
                         </motion.aside>
                     </>
