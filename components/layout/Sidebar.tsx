@@ -5,18 +5,19 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 // Premium Icons
-import { 
-    RiHome4Line, 
-    RiTeamLine, 
-    RiKey2Line, 
-    RiFocus3Line, 
-    RiNotification4Line, 
-    RiFileTextLine, 
-    RiBarChartGroupedLine, 
+import {
+    RiHome4Line,
+    RiTeamLine,
+    RiKey2Line,
+    RiFocus3Line,
+    RiNotification4Line,
+    RiFileTextLine,
+    RiBarChartGroupedLine,
     RiSettings3Line,
     RiMenu4Fill,
     RiCloseFill,
-    RiCheckboxCircleFill
+    RiCheckboxCircleFill,
+    RiTimerFlashLine
 } from 'react-icons/ri';
 import { GiTargeting } from "react-icons/gi";
 import Image from 'next/image';
@@ -29,10 +30,11 @@ interface NavItem {
     badge?: string;
 }
 
-const MENU_ITEMS: NavItem[  ] = [
+const MENU_ITEMS: NavItem[] = [
     { name: 'Dashboard', icon: RiHome4Line, href: '/dashboard', roles: ['operator', 'super_admin'] },
     { name: 'Campaigns', icon: RiFocus3Line, href: '/dashboard/campaigns', roles: ['operator', 'super_admin'] },
     { name: 'Large Campaigns', icon: GiTargeting, href: '/dashboard/large-campaigns', roles: ['operator', 'super_admin'] },
+    { name: 'Advanced', icon: RiTimerFlashLine, href: '/dashboard/advanced', roles: ['operator', 'super_admin'] },
     { name: 'Wallets', icon: RiKey2Line, href: '/dashboard/keys', roles: ['operator', 'super_admin'] },
     { name: 'Analytics', icon: RiBarChartGroupedLine, href: '/dashboard/analytics', roles: ['operator', 'super_admin'] },
     { name: 'Alerts', icon: RiNotification4Line, href: '/dashboard/alerts', roles: ['operator', 'super_admin'] },
@@ -58,7 +60,7 @@ export default function Sidebar() {
             {/* Header */}
             <div className="h-24 flex items-center px-8">
                 <div className="flex items-center gap-3">
-                    <Image src="/logo.svg" alt="Logo" width={40} height={40} quality={100}/>
+                    <Image src="/logo.svg" alt="Logo" width={40} height={40} quality={100} />
                     <div className="flex flex-col">
                         <span className="font-bold text-lg tracking-tight leading-none">WalletReach</span>
                     </div>
@@ -78,7 +80,7 @@ export default function Sidebar() {
                                 `}>
                                     {/* Animated Active Indicator */}
                                     {isActive && (
-                                        <motion.div 
+                                        <motion.div
                                             layoutId="activePill"
                                             className="absolute inset-0 bg-[#111] border border-white/5 rounded-2xl shadow-xl shadow-black"
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
@@ -86,17 +88,17 @@ export default function Sidebar() {
                                     )}
 
                                     <item.icon className={`relative z-10 text-xl transition-transform duration-500 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
-                                    
+
                                     <span className="relative z-10 text-[15px] font-medium tracking-wide">
                                         {item.name}
                                     </span>
 
                                     {/* Small dot for active items */}
                                     {isActive && (
-                                        <motion.div 
+                                        <motion.div
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
-                                            className="absolute left-0 w-1 h-5 bg-white rounded-r-full" 
+                                            className="absolute left-0 w-1 h-5 bg-white rounded-r-full"
                                         />
                                     )}
                                 </div>
@@ -119,7 +121,7 @@ export default function Sidebar() {
     return (
         <>
             {/* MOBILE TOGGLE BUTTON */}
-            <button 
+            <button
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-4 right-4 z-50 p-3 bg-black border border-white/10 rounded-2xl text-white md:hidden shadow-2xl"
             >
@@ -136,7 +138,7 @@ export default function Sidebar() {
                 {isOpen && (
                     <>
                         {/* Backdrop */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
