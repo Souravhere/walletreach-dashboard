@@ -28,7 +28,7 @@ interface NavItem {
     badge?: string;
 }
 
-const MENU_ITEMS: NavItem[] = [
+const MENU_ITEMS: NavItem[  ] = [
     { name: 'Dashboard', icon: RiHome4Line, href: '/dashboard', roles: ['operator', 'super_admin'] },
     { name: 'Campaigns', icon: RiFocus3Line, href: '/dashboard/campaigns', roles: ['operator', 'super_admin'] },
     { name: 'Large Campaigns', icon: GiTargeting, href: '/dashboard/large-campaigns', roles: ['operator', 'super_admin'] },
