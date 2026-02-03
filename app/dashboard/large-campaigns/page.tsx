@@ -18,7 +18,8 @@ import {
     FiSettings,
     FiDatabase,
     FiGift,
-    FiFilter
+    FiFilter,
+    FiDownload
 } from 'react-icons/fi';
 import Select from '@/components/ui/Select';
 import DiscreteAmountBuilder from '@/components/campaigns/DiscreteAmountBuilder';
