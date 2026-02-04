@@ -4,64 +4,41 @@ import { motion } from 'framer-motion';
 
 interface BadgeProps {
     children: React.ReactNode;
-    variant?: 'default' | 'success' | 'error' | 'warning' | 'info';
-    size?: 'sm' | 'md' | 'lg';
-    dot?: boolean;
+    variant?: 'default' | 'success' | 'error' | 'warning' | 'info' | 'critical';
+    size?: 'sm' | 'md';
     className?: string;
 }
 
-export default function Badge({
-    children,
-    variant = 'default',
-    size = 'md',
-    dot = false,
-    className = '',
-}: BadgeProps) {
-    const baseStyles = `
-    inline-flex items-center gap-1.5 font-medium rounded-full
-    transition-all duration-200
-  `;
-
+export default function Badge({ children, variant = 'default', size = 'md', className = '' }: BadgeProps) {
     const variants = {
-        default: 'bg-[var(--bg-elevated)] text-white border border-[var(--border-default)]',
-        success: 'bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20',
-        error: 'bg-[var(--color-error)]/10 text-[var(--color-error)] border border-[var(--color-error)]/20',
-        warning: 'bg-[var(--color-warning)]/10 text-[var(--color-warning)] border border-[var(--color-warning)]/20',
-        info: 'bg-[var(--color-info)]/10 text-[var(--color-info)] border border-[var(--color-info)]/20',
-    };
-
-    const sizes = {
-        sm: 'px-2 py-0.5 text-xs',
-        md: 'px-2.5 py-1 text-xs',
-        lg: 'px-3 py-1.5 text-sm',
+        default: 'bg-white/5 text-gray-400 border-white/10',
+        success: 'bg-emerald-500/5 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]',
+        error: 'bg-rose-500/5 text-rose-400 border-rose-500/20 shadow-[0_0_10px_rgba(244,63,94,0.1)]',
+        critical: 'bg-red-600/10 text-red-500 border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]',
+        warning: 'bg-amber-500/5 text-amber-400 border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.1)]',
+        info: 'bg-blue-500/5 text-blue-400 border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.1)]',
     };
 
     const dotColors = {
-        default: 'bg-white',
-        success: 'bg-[var(--color-success)]',
-        error: 'bg-[var(--color-error)]',
-        warning: 'bg-[var(--color-warning)]',
-        info: 'bg-[var(--color-info)]',
+        default: 'bg-gray-500',
+        success: 'bg-emerald-500',
+        error: 'bg-rose-500',
+        critical: 'bg-red-500',
+        warning: 'bg-amber-500',
+        info: 'bg-blue-500',
     };
 
     return (
         <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
             className={`
-        ${baseStyles}
-        ${variants[variant]}
-        ${sizes[size]}
-        ${className}
-      `}
+                inline-flex items-center gap-2 px-3 py-1 rounded-full border
+                text-[10px] font-black uppercase tracking-[0.1em] backdrop-blur-md
+                ${variants[variant]} ${size === 'sm' ? 'px-2 py-0.5' : ''} ${className}
+            `}
         >
-            {dot && (
-                <motion.span
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]}`}
-                />
-            )}
+            <span className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]} shadow-sm`} />
             {children}
         </motion.span>
     );

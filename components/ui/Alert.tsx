@@ -2,35 +2,27 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { RiCloseLine, RiErrorWarningFill } from 'react-icons/ri';
 
-interface AlertProps {
-    type?: 'info' | 'warning' | 'critical' | 'success';
-    children: React.ReactNode;
-    onClose?: () => void;
-}
-
-export default function Alert({ type = 'info', children, onClose }: AlertProps) {
-    const types = {
-        info: 'bg-blue-500/10 border-blue-500 text-blue-400',
-        warning: 'bg-yellow-500/10 border-yellow-500 text-yellow-400',
-        critical: 'bg-red-500/10 border-red-500 text-red-400',
-        success: 'bg-green-500/10 border-green-500 text-green-400',
+export default function Alert({ type = 'info', children, onClose }: any) {
+    const styles = {
+        critical: 'border-red-500/50 bg-red-500/5 text-red-200',
+        warning: 'border-amber-500/50 bg-amber-500/5 text-amber-200',
+        info: 'border-blue-500/50 bg-blue-500/5 text-blue-200',
+        success: 'border-green-500/50 bg-green-500/5 text-green-200',
     };
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className={`border-l-4 p-4 rounded ${types[type]} flex items-start justify-between`}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className={`flex items-center gap-4 p-4 rounded-2xl border backdrop-blur-md ${styles[type as keyof typeof styles]}`}
         >
-            <div className="flex-1">{children}</div>
+            <RiErrorWarningFill className="text-xl shrink-0" />
+            <div className="flex-1 text-sm font-medium">{children}</div>
             {onClose && (
-                <button
-                    onClick={onClose}
-                    className="ml-4 text-current opacity-70 hover:opacity-100 transition-opacity"
-                >
-                    ✕
+                <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
+                    <RiCloseLine size={20} />
                 </button>
             )}
         </motion.div>

@@ -6,64 +6,28 @@ import { ReactNode } from 'react';
 interface CardProps {
     children: ReactNode;
     className?: string;
-    variant?: 'default' | 'glass' | 'elevated';
+    variant?: 'default' | 'glass' | 'luxury';
     hover?: boolean;
     padding?: 'none' | 'sm' | 'md' | 'lg';
     onClick?: () => void;
-    title?: string;
 }
 
-export default function Card({
-    children,
-    className = '',
-    variant = 'default',
-    hover = false,
-    padding = 'md',
-    onClick,
-    title,
-}: CardProps) {
-    const baseStyles = `
-    rounded-lg border transition-all duration-200
-  `;
-
+export default function Card({ children, className = '', variant = 'luxury', hover = false, padding = 'md', onClick }: CardProps) {
     const variants = {
-        default: `
-      bg-[var(--bg-secondary)] border-[var(--border-subtle)]
-    `,
-        glass: `
-      bg-white/3 backdrop-blur-xl border-[var(--border-default)]
-    `,
-        elevated: `
-      bg-[var(--bg-elevated)] border-[var(--border-default)]
-      shadow-lg
-    `,
+        default: 'bg-[#0a0a0a] border-white/5',
+        glass: 'bg-white/[0.02] backdrop-blur-xl border-white/10',
+        luxury: 'bg-gradient-to-b from-white/[0.04] to-transparent border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.4)]',
     };
 
-    const paddings = {
-        none: '',
-        sm: 'p-3',
-        md: 'p-4',
-        lg: 'p-6',
-    };
-
-    const hoverStyles = hover
-        ? 'cursor-pointer hover:border-[var(--border-strong)] hover:shadow-xl hover:-translate-y-1'
-        : '';
+    const paddings = { none: '', sm: 'p-3', md: 'p-5', lg: 'p-8' };
 
     return (
         <motion.div
-            initial={false}
-            whileHover={hover ? { y: -4 } : {}}
-            className={`
-        ${baseStyles}
-        ${variants[variant]}
-        ${paddings[padding]}
-        ${hoverStyles}
-        ${className}
-      `}
+            whileHover={hover ? { y: -4, borderColor: 'rgba(255,255,255,0.1)' } : {}}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className={`rounded-2xl border transition-colors ${variants[variant]} ${paddings[padding]} ${className} ${onClick ? 'cursor-pointer' : ''}`}
             onClick={onClick}
         >
-            {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
             {children}
         </motion.div>
     );
