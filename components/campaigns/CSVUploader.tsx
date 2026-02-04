@@ -182,7 +182,7 @@ export default function CSVUploader({ onUploadSuccess, onError }: CSVUploaderPro
                         exit={{ opacity: 0, y: -10 }}
                     >
                         {uploadResult.error ? (
-                            <Card variant="elevated" padding="lg" className="border-[var(--color-error)]">
+                            <Card variant="luxury" padding="lg" className="border-[var(--color-error)]">
                                 <div className="flex items-start gap-4">
                                     <div className="flex-shrink-0">
                                         <div className="w-12 h-12 rounded-full bg-[var(--color-error)]/10 flex items-center justify-center">
@@ -199,7 +199,7 @@ export default function CSVUploader({ onUploadSuccess, onError }: CSVUploaderPro
                                 </div>
                             </Card>
                         ) : (
-                            <Card variant="elevated" padding="lg" className="border-[var(--color-success)]">
+                            <Card variant="luxury" padding="lg" className="border-[var(--color-success)]">
                                 <div className="flex items-start gap-4 mb-6">
                                     <div className="flex-shrink-0">
                                         <div className="w-12 h-12 rounded-full bg-[var(--color-success)]/10 flex items-center justify-center">
