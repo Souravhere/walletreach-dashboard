@@ -19,6 +19,7 @@ import {
     RiArrowRightSLine,
     RiDatabase2Line
 } from 'react-icons/ri';
+import Link from 'next/link';
 
 export default function DashboardPage() {
     const [overview, setOverview] = useState<any>(null);
@@ -242,9 +243,11 @@ export default function DashboardPage() {
                                     ))
                                 )}
                             </div>
+                            <Link href='/dashboard/alerts'>
                             <button className="w-full mt-6 py-3 border-t border-white/5 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] hover:text-white transition-colors">
                                 View Intelligence Feed
                             </button>
+                            </Link>
                         </Card>
                     </div>
                 </div>
