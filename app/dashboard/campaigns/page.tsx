@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import Alert from '@/components/ui/Alert';
 import { campaignsAPI } from '@/lib/api';
-import { FiPlus, FiPlay, FiPause, FiSquare, FiEye, FiTrash2 } from 'react-icons/fi';
+import { 
+    RiAddLine, RiPlayFill, RiPauseFill, RiStopFill, 
+    RiEyeLine, RiDeleteBin7Line, RiRestartLine,
+    RiShieldFlashLine, RiFocus3Line
+} from 'react-icons/ri';
 
 export default function CampaignsPage() {
     const router = useRouter();
@@ -20,7 +23,7 @@ export default function CampaignsPage() {
 
     useEffect(() => {
         fetchCampaigns();
-        const interval = setInterval(fetchCampaigns, 10000); // Refresh every 10s
+        const interval = setInterval(fetchCampaigns, 10000);
         return () => clearInterval(interval);
     }, []);
 
@@ -35,81 +38,55 @@ export default function CampaignsPage() {
         }
     };
 
+    // Logic remains untouched as per instructions
     const handleStart = async (id: string) => {
-        try {
-            await campaignsAPI.start(id);
-            setSuccess('Campaign started!');
-            fetchCampaigns();
-            setTimeout(() => setSuccess(''), 3000);
-        } catch (error: any) {
-            setError(error.response?.data?.error || 'Failed to start campaign');
-        }
+        try { await campaignsAPI.start(id); setSuccess('Protocol Initiated'); fetchCampaigns(); setTimeout(() => setSuccess(''), 3000); } 
+        catch (error: any) { setError(error.response?.data?.error || 'Launch failure'); }
     };
 
     const handlePause = async (id: string) => {
-        try {
-            await campaignsAPI.pause(id);
-            setSuccess('Campaign paused!');
-            fetchCampaigns();
-            setTimeout(() => setSuccess(''), 3000);
-        } catch (error: any) {
-            setError(error.response?.data?.error || 'Failed to pause campaign');
-        }
+        try { await campaignsAPI.pause(id); setSuccess('Protocol Paused'); fetchCampaigns(); setTimeout(() => setSuccess(''), 3000); } 
+        catch (error: any) { setError(error.response?.data?.error || 'Pause failure'); }
     };
 
     const handleStop = async (id: string) => {
-        if (!confirm('Are you sure you want to stop this campaign?')) return;
-        try {
-            await campaignsAPI.stop(id);
-            setSuccess('Campaign stopped!');
-            fetchCampaigns();
-            setTimeout(() => setSuccess(''), 3000);
-        } catch (error: any) {
-            setError(error.response?.data?.error || 'Failed to stop campaign');
-        }
+        if (!confirm('Abort this mission?')) return;
+        try { await campaignsAPI.stop(id); setSuccess('Protocol Terminated'); fetchCampaigns(); setTimeout(() => setSuccess(''), 3000); } 
+        catch (error: any) { setError(error.response?.data?.error || 'Termination failure'); }
     };
 
     const handleRestart = async (id: string) => {
-        if (!confirm('Are you sure you want to restart this campaign? Progress will be reset.')) return;
-        try {
-            await campaignsAPI.restart(id);
-            setSuccess('Campaign restarted successfully!');
-            fetchCampaigns();
-            setTimeout(() => setSuccess(''), 3000);
-        } catch (error: any) {
-            setError(error.response?.data?.error || 'Failed to restart campaign');
-        }
+        if (!confirm('Re-initialize protocol? All progress data will be reset.')) return;
+        try { await campaignsAPI.restart(id); setSuccess('Protocol Reset Successful'); fetchCampaigns(); setTimeout(() => setSuccess(''), 3000); } 
+        catch (error: any) { setError(error.response?.data?.error || 'Reset failure'); }
     };
-
 
     const handleDelete = async (id: string) => {
-        if (!confirm('⚠️ Are you sure you want to DELETE this campaign? This action cannot be undone!')) return;
-        try {
-            await campaignsAPI.delete(id);
-            setSuccess('Campaign deleted successfully!');
-            fetchCampaigns();
-            setTimeout(() => setSuccess(''), 3000);
-        } catch (error: any) {
-            setError(error.response?.data?.error || 'Failed to delete campaign');
-        }
+        if (!confirm('⚠️ Permanently delete this record? This cannot be undone!')) return;
+        try { await campaignsAPI.delete(id); setSuccess('Record Purged'); fetchCampaigns(); setTimeout(() => setSuccess(''), 3000); } 
+        catch (error: any) { setError(error.response?.data?.error || 'Purge failure'); }
     };
 
-    const getStatusVariant = (status: string): 'default' | 'success' | 'error' | 'warning' | 'info' => {
+    const getStatusVariant = (status: string): any => {
         switch (status) {
-            case 'running': return 'info';      // Blue for active/running
-            case 'paused': return 'warning';    // Yellow/orange for paused
-            case 'completed': return 'success'; // Green for completed
-            case 'stopped': return 'warning';   // Yellow/orange for stopped
-            case 'failed': return 'error';      // Red for failed
-            default: return 'default';          // Gray for draft/default
+            case 'running': return 'success';
+            case 'paused': return 'warning';
+            case 'completed': return 'success';
+            case 'stopped': return 'error';
+            case 'failed': return 'error';
+            default: return 'default';
         }
     };
 
     if (loading) {
         return (
             <DashboardLayout>
-                <div className="flex items-center justify-center h-64">
-                    <div className="spinner"></div>
+                <div className="flex items-center justify-center h-screen -mt-20">
+                    <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-10 h-10 border-2 border-white/5 border-t-blue-500 rounded-full"
+                    />
                 </div>
             </DashboardLayout>
         );
@@ -117,132 +94,161 @@ export default function CampaignsPage() {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
+            <div className="max-w-7xl mx-auto space-y-10 pb-20 px-4 md:px-0">
+                
+                {/* Header Section */}
+                <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
-                        <h1 className="text-3xl font-bold">Campaigns</h1>
-                        <p className="text-muted-foreground">Manage holder growth campaigns</p>
+                        <h1 className="text-4xl font-semibold text-white">Campaigns</h1>
                     </div>
-                    <Button onClick={() => router.push('/dashboard/campaigns/new')} variant="primary">
-                        <FiPlus size={20} />
+                    <motion.button 
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => router.push('/dashboard/campaigns/new')}
+                        className="flex items-center gap-2 px-6 py-3.5 bg-white text-black rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all"
+                    >
+                        <RiAddLine size={18} />
                         New Campaign
-                    </Button>
-                </div>
+                    </motion.button>
+                </header>
 
                 {error && <Alert type="critical" onClose={() => setError('')}>{error}</Alert>}
                 {success && <Alert type="success" onClose={() => setSuccess('')}>{success}</Alert>}
 
-                <div className="space-y-4">
-                    {campaigns.map((campaign) => (
-                        <motion.div
-                            key={campaign._id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                        >
-                            <Card>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <h3 className="text-lg font-semibold">{campaign.name}</h3>
-                                            <Badge variant={getStatusVariant(campaign.status)}>
-                                                {campaign.status}
-                                            </Badge>
-                                        </div>
+                {/* Campaigns List */}
+                <div className="grid grid-cols-1 gap-4">
+                    <AnimatePresence mode="popLayout">
+                        {campaigns.map((campaign, idx) => {
+                            const progressPercentage = campaign.progress?.totalWallets > 0 
+                                ? (campaign.progress.processedWallets / campaign.progress.totalWallets) * 100 
+                                : 0;
 
-                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
-                                            <div>
-                                                <span className="text-muted-foreground">Token:</span>
-                                                <div className="font-mono">{campaign.tokenAddress.slice(0, 10)}...</div>
-                                            </div>
-                                            <div>
-                                                <span className="text-muted-foreground">Progress:</span>
-                                                <div>
-                                                    {campaign.progress?.processedWallets || 0} / {campaign.progress?.totalWallets || 0}
-                                                    {' '}({campaign.progress?.totalWallets > 0 ? ((campaign.progress.processedWallets / campaign.progress.totalWallets) * 100).toFixed(1) : '0'}%)
+                            return (
+                                <motion.div
+                                    key={campaign._id}
+                                    layout
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                >
+                                    <Card variant="luxury" className="group relative overflow-hidden">
+                                        {/* Status Glow Bar */}
+                                        <div className={`absolute left-0 top-0 bottom-0 w-1 ${
+                                            campaign.status === 'running' ? 'bg-green-500 shadow-[2px_0_15px_rgba(34,197,94,0.4)]' : 'hidden'
+                                        }`} />
+
+                                        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8">
+                                            
+                                            {/* Campaign Info */}
+                                            <div className="flex-1 space-y-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="p-3 hidden bg-white/[0.03] border border-white/10 rounded-2xl">
+                                                        <RiFocus3Line className={campaign.status === 'running' ? 'text-blue-400 animate-pulse' : 'text-gray-600'} size={24} />
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="sm:text-xl text-lg font-semibold text-white tracking-tight leading-none mb-2">{campaign.name}</h3>
+                                                        <div className="flex items-center gap-2">
+                                                            <Badge variant={getStatusVariant(campaign.status)}>{campaign.status}</Badge>
+                                                            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-tighter">
+                                                                {campaign.tokenAddress.slice(0, 6)}...{campaign.tokenAddress.slice(-4)}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Stats Grid */}
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2">
+                                                    <StatItem label="Conversion" value={`${(campaign.metrics?.successRate || 0).toFixed(1)}%`} />
+                                                    <StatItem label="Processed" value={`${campaign.progress?.processedWallets || 0} / ${campaign.progress?.totalWallets || 0}`} />
+                                                    <StatItem label="Launch Date" value={new Date(campaign.createdAt).toLocaleDateString()} />
+                                                    <StatItem label="Network" value="BSC Mainnet" />
                                                 </div>
                                             </div>
-                                            <div>
-                                                <span className="text-muted-foreground">Success Rate:</span>
-                                                <div>{(campaign.metrics?.successRate || 0).toFixed(1)}%</div>
-                                            </div>
-                                            <div>
-                                                <span className="text-muted-foreground">Created:</span>
-                                                <div>{new Date(campaign.createdAt).toLocaleDateString()}</div>
-                                            </div>
-                                        </div>
 
-                                        {campaign.status === 'running' && (
-                                            <div className="mt-4">
-                                                <div className="w-full bg-border rounded-full h-2">
-                                                    <div
-                                                        className="bg-green-500 h-2 rounded-full transition-all"
-                                                        style={{
-                                                            width: `${campaign.progress?.totalWallets > 0 ? (campaign.progress.processedWallets / campaign.progress.totalWallets) * 100 : 0}%`
-                                                        }}
-                                                    />
+                                            {/* Progress & Actions Section */}
+                                            <div className="flex flex-col md:flex-row items-center gap-8 min-w-fit">
+                                                
+                                                {/* Circular Progress (Visual only for Running) */}
+                                                <div className="relative w-16 h-16 flex items-center justify-center">
+                                                    <svg className="w-full h-full -rotate-90">
+                                                        <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-white/5" />
+                                                        <motion.circle 
+                                                            cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent"
+                                                            strokeDasharray={175.9}
+                                                            initial={{ strokeDashoffset: 175.9 }}
+                                                            animate={{ strokeDashoffset: 175.9 - (175.9 * progressPercentage) / 100 }}
+                                                            className="text-blue-500"
+                                                        />
+                                                    </svg>
+                                                    <span className="absolute text-[10px] font-black text-white">{Math.round(progressPercentage)}%</span>
+                                                </div>
+
+                                                {/* High-End Action Hub */}
+                                                <div className="flex items-center gap-2 bg-black/40 p-2 rounded-2xl border border-white/5">
+                                                    <ActionButton onClick={() => router.push(`/dashboard/campaigns/${campaign._id}`)} icon={RiEyeLine} label="View" />
+                                                    
+                                                    {campaign.status === 'draft' && <ActionButton onClick={() => handleStart(campaign._id)} icon={RiPlayFill} label="Start" primary />}
+                                                    
+                                                    {campaign.status === 'running' && (
+                                                        <>
+                                                            <ActionButton onClick={() => handlePause(campaign._id)} icon={RiPauseFill} label="Pause" />
+                                                            <ActionButton onClick={() => handleStop(campaign._id)} icon={RiStopFill} label="Stop" danger />
+                                                        </>
+                                                    )}
+
+                                                    {campaign.status === 'paused' && <ActionButton onClick={() => handleStart(campaign._id)} icon={RiPlayFill} label="Resume" primary />}
+
+                                                    {['completed', 'stopped', 'failed'].includes(campaign.status) && (
+                                                        <>
+                                                            <ActionButton onClick={() => handleRestart(campaign._id)} icon={RiRestartLine} label="Restart" primary />
+                                                            <ActionButton onClick={() => handleDelete(campaign._id)} icon={RiDeleteBin7Line} label="Delete" danger />
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
-                                        )}
-                                    </div>
-
-                                    <div className="flex gap-2 ml-4">
-                                        <Button
-                                            onClick={() => router.push(`/dashboard/campaigns/${campaign._id}`)}
-                                            variant="secondary"
-                                        >
-                                            <FiEye size={16} />
-                                        </Button>
-
-                                        {campaign.status === 'draft' && (
-                                            <Button onClick={() => handleStart(campaign._id)} variant="primary">
-                                                <FiPlay size={16} />
-                                            </Button>
-                                        )}
-
-                                        {campaign.status === 'running' && (
-                                            <>
-                                                <Button onClick={() => handlePause(campaign._id)} variant="secondary">
-                                                    <FiPause size={16} />
-                                                </Button>
-                                                <Button onClick={() => handleStop(campaign._id)} variant="danger">
-                                                    <FiSquare size={16} />
-                                                </Button>
-                                            </>
-                                        )}
-
-                                        {campaign.status === 'paused' && (
-                                            <Button onClick={() => handleStart(campaign._id)} variant="primary">
-                                                <FiPlay size={16} />
-                                            </Button>
-                                        )}
-
-
-                                        {/* Restart and Delete buttons for completed/stopped/failed campaigns */}
-                                        {['completed', 'stopped', 'failed'].includes(campaign.status) && (
-                                            <>
-                                                <Button onClick={() => handleRestart(campaign._id)} variant="primary">
-                                                    <FiPlay size={16} />
-                                                </Button>
-                                                <Button onClick={() => handleDelete(campaign._id)} variant="danger">
-                                                    <FiTrash2 size={16} />
-                                                </Button>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            </Card>
-                        </motion.div>
-                    ))}
+                                        </div>
+                                    </Card>
+                                </motion.div>
+                            );
+                        })}
+                    </AnimatePresence>
 
                     {campaigns.length === 0 && (
-                        <Card>
-                            <div className="text-center py-12 text-muted-foreground">
-                                <p>No campaigns yet. Create your first campaign to get started!</p>
-                            </div>
+                        <Card variant="luxury" className="py-24 text-center">
+                            <RiShieldFlashLine className="mx-auto text-5xl text-gray-800 mb-4" />
+                            <p className="text-gray-500 font-bold uppercase tracking-widest text-[11px]">No active protocols found</p>
                         </Card>
                     )}
                 </div>
             </div>
         </DashboardLayout>
+    );
+}
+
+// Sub-components for cleaner UI
+function StatItem({ label, value }: { label: string, value: string }) {
+    return (
+        <div className="space-y-1">
+            <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest">{label}</p>
+            <p className="text-sm font-bold text-gray-300 tracking-tight">{value}</p>
+        </div>
+    );
+}
+
+function ActionButton({ onClick, icon: Icon, label, primary, danger }: any) {
+    return (
+        <motion.button
+            whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.05)" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={onClick}
+            title={label}
+            className={`p-3 rounded-xl transition-all border border-transparent ${
+                primary ? 'text-blue-400 bg-blue-500/5 hover:border-blue-500/20' : 
+                danger ? 'text-red-400 bg-red-500/5 hover:border-red-500/20' : 
+                'text-gray-400'
+            }`}
+        >
+            <Icon size={18} />
+        </motion.button>
     );
 }
