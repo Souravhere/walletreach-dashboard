@@ -195,7 +195,8 @@ export default function CampaignDetailsPage() {
                 </Card>
 
                 {/* Progress */}
-                <Card title="Progress">
+                <Card>
+                    <h3 className="text-lg font-semibold mb-4">Progress</h3>
                     <div className="space-y-4">
                         <div>
                             <div className="flex justify-between text-sm mb-2">
@@ -317,7 +318,8 @@ export default function CampaignDetailsPage() {
 
                 {/* Configuration */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <Card title="Campaign Configuration">
+                    <Card>
+                        <h3 className="text-lg font-semibold mb-4">Campaign Configuration</h3>
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Token Address:</span>
@@ -342,7 +344,8 @@ export default function CampaignDetailsPage() {
                         </div>
                     </Card>
 
-                    <Card title="Metrics">
+                    <Card>
+                        <h3 className="text-lg font-semibold mb-4">Metrics</h3>
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Total Gas Used:</span>
@@ -378,7 +381,8 @@ export default function CampaignDetailsPage() {
                 </div>
 
                 {/* Filters */}
-                <Card title="Wallet Filters">
+                <Card>
+                    <h3 className="text-lg font-semibold mb-4">Wallet Filters</h3>
                     <div className="space-y-2 text-sm">
                         <div className="flex items-center gap-2">
                             <div className={`w-4 h-4 rounded ${campaign.filters.excludeContracts ? 'bg-green-500' : 'bg-gray-500'}`}></div>
