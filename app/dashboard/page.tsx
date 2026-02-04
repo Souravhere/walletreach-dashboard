@@ -50,7 +50,13 @@ export default function DashboardPage() {
         }
     };
 
-    const chartData = useMemo(() => overview?.campaignStats || [], [overview]);
+    const chartData = useMemo(() => {
+        if (!overview?.recentActivity) return [];
+        return overview.recentActivity.map((item: any) => ({
+            name: new Date(item._id).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+            value: item.count
+        }));
+    }, [overview]);
 
     if (loading || !isMounted) {
         return (
@@ -124,7 +130,7 @@ export default function DashboardPage() {
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center gap-3">
                                     <RiDatabase2Line className="text-blue-500" />
-                                    <h3 className="font-bold text-white tracking-wide uppercase text-xs tracking-[0.2em]">Network Growth Trajectory</h3>
+                                    <h3 className="font-bold text-white tracking-wide uppercase text-xs tracking-[0.2em]">7-Day Transaction Volume</h3>
                                 </div>
                             </div>
                             <div className="h-[300px] w-full">
@@ -149,7 +155,8 @@ export default function DashboardPage() {
                                         />
                                         <Area
                                             type="monotone"
-                                            dataKey="holders"
+                                            dataKey="value"
+                                            name="Transactions"
                                             stroke="#3b82f6"
                                             strokeWidth={3}
                                             fill="url(#glowBlue)"
