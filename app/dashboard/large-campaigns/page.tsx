@@ -46,7 +46,6 @@ export default function LargeCampaignsPage() {
             },
             discreteAmounts: [] as number[],
         },
-        scheduledFor: '',
     });
 
     const [validationResults, setValidationResults] = useState({
@@ -212,7 +211,6 @@ export default function LargeCampaignsPage() {
                 rewardConfig: formData.rewardConfig,
                 transferDelay: formData.delay,
                 parallelInstances: 1,
-                scheduledFor: formData.scheduledFor || undefined,
             };
 
             const response = await campaignsAPI.create(campaignData);
@@ -382,23 +380,6 @@ export default function LargeCampaignsPage() {
                                             <div className="flex items-start gap-2 mt-2 text-xs text-white/40">
                                                 <FiInfo size={12} className="mt-0.5 flex-shrink-0" />
                                                 <span>Delay between transactions (1-10s recommended for large scale)</span>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium mb-2 text-white/80">
-                                                Schedule Start (Optional)
-                                            </label>
-                                            <Input
-                                                type="datetime-local"
-                                                value={formData.scheduledFor}
-                                                onChange={(e) => setFormData({ ...formData, scheduledFor: e.target.value })}
-                                                min={new Date().toISOString().slice(0, 16)}
-                                                className="bg-white/5 border-white/10 focus:border-white/30"
-                                            />
-                                            <div className="flex items-start gap-2 mt-2 text-xs text-white/40">
-                                                <FiInfo size={12} className="mt-0.5 flex-shrink-0" />
-                                                <span>Leave blank to start immediately upon launch</span>
                                             </div>
                                         </div>
 
@@ -737,7 +718,6 @@ export default function LargeCampaignsPage() {
                                             { label: 'Token Address', value: `${formData.tokenAddress.slice(0, 10)}...${formData.tokenAddress.slice(-8)}`, mono: true },
                                             { label: 'Total Recipients', value: validationResults.valid.toLocaleString() },
                                             { label: 'Transfer Delay', value: `${formData.delay}s` },
-                                            { label: 'Start Time', value: formData.scheduledFor ? new Date(formData.scheduledFor).toLocaleString() : 'Immediately' },
                                             { label: 'Est. Duration', value: estimations.duration },
                                             { label: 'Est. Cost', value: estimations.cost },
                                         ].map((item, index) => (
@@ -781,7 +761,7 @@ export default function LargeCampaignsPage() {
                                 disabled={!isStepValid(currentStep)}
                                 className="bg-white text-black hover:bg-white/90"
                             >
-                                {formData.scheduledFor ? 'Schedule Campaign' : 'Launch Campaign'}
+                                Launch Campaign
                             </Button>
                         )}
                     </div>
