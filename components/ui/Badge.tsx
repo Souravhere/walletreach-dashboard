@@ -34,11 +34,10 @@ export default function Badge({ children, variant = 'default', size = 'md', clas
             animate={{ opacity: 1, y: 0 }}
             className={`
                 inline-flex items-center gap-2 px-3 py-1 rounded-full border
-                text-[10px] font-black uppercase tracking-[0.1em] backdrop-blur-md
+                text-[10px] font-semibold uppercase tracking-[0.1em] backdrop-blur-md
                 ${variants[variant]} ${size === 'sm' ? 'px-2 py-0.5' : ''} ${className}
             `}
         >
-            <span className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]} shadow-sm`} />
             {children}
         </motion.span>
     );
