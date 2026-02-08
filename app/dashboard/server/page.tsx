@@ -8,7 +8,7 @@ import Alert from '@/components/ui/Alert';
 import Badge from '@/components/ui/Badge';
 import { systemAPI } from '@/lib/api';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
+     XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
 } from 'recharts';
 import {
     RiServerLine,
@@ -94,7 +94,6 @@ export default function ServerPage() {
             <div className="max-w-[1600px] mx-auto space-y-8 pb-20">
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="flex items-center gap-4">
-                        <RiServerLine className="text-4xl text-blue-500" />
                         <div>
                             <h1 className="text-4xl font-semibold text-white">Server Monitor</h1>
                             <p className="text-gray-500 text-sm mt-1">{stats?.system.hostname}</p>
