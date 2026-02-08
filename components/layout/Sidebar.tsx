@@ -17,7 +17,8 @@ import {
     RiMenu4Fill,
     RiCloseFill,
     RiCheckboxCircleFill,
-    RiTimerFlashLine
+    RiTimerFlashLine,
+    RiServerLine
 } from 'react-icons/ri';
 import { GiTargeting } from "react-icons/gi";
 import Image from 'next/image';
@@ -37,6 +38,7 @@ const MENU_ITEMS: NavItem[] = [
     { name: 'Advanced', icon: RiTimerFlashLine, href: '/dashboard/advanced', roles: ['operator', 'super_admin'] },
     { name: 'Wallets', icon: RiKey2Line, href: '/dashboard/keys', roles: ['operator', 'super_admin'] },
     { name: 'Analytics', icon: RiBarChartGroupedLine, href: '/dashboard/analytics', roles: ['operator', 'super_admin'] },
+    { name: 'Server', icon: RiServerLine, href: '/dashboard/server', roles: ['operator', 'super_admin'] },
     { name: 'Alerts', icon: RiNotification4Line, href: '/dashboard/alerts', roles: ['operator', 'super_admin'] },
     { name: 'Logs', icon: RiFileTextLine, href: '/dashboard/logs', roles: ['operator', 'super_admin'] },
     { name: 'Users', icon: RiTeamLine, href: '/dashboard/users', roles: ['super_admin'] },

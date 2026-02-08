@@ -104,3 +104,8 @@ export const settingsAPI = {
     emergencyStop: (reason?: string) => api.post('/settings/emergency-stop', { reason }),
     getStatus: () => api.get('/settings/status'),
 };
+
+export const systemAPI = {
+    getStats: () => api.get('/system/stats'),
+    getRealtime: () => api.get('/system/realtime'),
+};
