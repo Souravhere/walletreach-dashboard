@@ -11,6 +11,7 @@ import Input from '@/components/ui/Input';
 import Alert from '@/components/ui/Alert';
 import { walletsAPI } from '@/lib/api';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff } from 'react-icons/fi';
+import Toggle from '@/components/ui/Toggle';
 
 export default function WalletsPage() {
     const [wallets, setWallets] = useState<any[]>([]);
@@ -21,6 +22,7 @@ export default function WalletsPage() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [showPrivateKey, setShowPrivateKey] = useState(false);
+    const [togglingWallet, setTogglingWallet] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -91,6 +93,22 @@ export default function WalletsPage() {
         }
     };
 
+    const handleToggleStatus = async (walletId: string) => {
+        setTogglingWallet(walletId);
+        setError('');
+
+        try {
+            const response = await walletsAPI.toggleStatus(walletId);
+            setSuccess(response.data.message || 'Wallet status updated successfully!');
+            fetchWallets();
+            setTimeout(() => setSuccess(''), 3000);
+        } catch (error: any) {
+            setError(error.response?.data?.error || 'Failed to toggle wallet status');
+        } finally {
+            setTogglingWallet(null);
+        }
+    };
+
     const handleDelete = async (walletId: string) => {
         if (!confirm('Are you sure you want to delete this wallet?')) return;
 
@@ -155,15 +173,26 @@ export default function WalletsPage() {
                             <Card>
                                 <div className="space-y-4">
                                     <div className="flex items-start justify-between">
-                                        <div>
+                                        <div className="flex-1">
                                             <h3 className="text-lg font-semibold">{wallet.name}</h3>
                                             <p className="text-sm text-muted-foreground font-mono">
                                                 {wallet.address.slice(0, 10)}...{wallet.address.slice(-8)}
                                             </p>
                                         </div>
-                                        <Badge variant={wallet.isActive ? 'success' : 'default'}>
-                                            {wallet.isActive ? 'Active' : 'Inactive'}
-                                        </Badge>
+                                        <div className="flex flex-col items-end gap-1">
+                                            <Toggle
+                                                checked={wallet.status === 'active'}
+                                                onChange={() => handleToggleStatus(wallet._id)}
+                                                loading={togglingWallet === wallet._id}
+                                                size="md"
+                                            />
+                                            <span className={`text-xs font-medium ${wallet.status === 'active'
+                                                    ? 'text-green-400'
+                                                    : 'text-gray-500'
+                                                }`}>
+                                                {wallet.status === 'active' ? 'Active' : 'Disabled'}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     {wallet.description && (

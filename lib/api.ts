@@ -64,6 +64,7 @@ export const walletsAPI = {
     getAll: () => api.get('/wallets'),
     getById: (id: string) => api.get(`/wallets/${id}`),
     update: (id: string, data: any) => api.put(`/wallets/${id}`, data),
+    toggleStatus: (id: string) => api.patch(`/wallets/${id}/toggle-status`),
     delete: (id: string) => api.delete(`/wallets/${id}`),
     getBalance: (id: string, tokenAddress?: string) =>
         api.get(`/wallets/${id}/balance`, { params: { tokenAddress } }),
