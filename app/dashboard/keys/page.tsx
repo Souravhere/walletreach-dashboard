@@ -29,6 +29,7 @@ export default function WalletsPage() {
         maxTxPerDay: 500,
         maxAmountPerDay: 1000000,
         maxPendingTx: 3,
+        status: 'active',
     });
 
     useEffect(() => {
@@ -61,6 +62,7 @@ export default function WalletsPage() {
                 maxTxPerDay: 500,
                 maxAmountPerDay: 1000000,
                 maxPendingTx: 3,
+                status: 'active',
             });
             fetchWallets();
             setTimeout(() => setSuccess(''), 3000);
@@ -78,6 +80,7 @@ export default function WalletsPage() {
                 maxTxPerDay: formData.maxTxPerDay,
                 maxAmountPerDay: formData.maxAmountPerDay,
                 maxPendingTx: formData.maxPendingTx,
+                status: formData.status,
             });
             setSuccess('Wallet updated successfully!');
             setIsEditModalOpen(false);
@@ -110,6 +113,7 @@ export default function WalletsPage() {
             maxTxPerDay: wallet.limits.maxTxPerDay,
             maxAmountPerDay: wallet.limits.maxAmountPerDay,
             maxPendingTx: wallet.limits.maxPendingTx,
+            status: wallet.status || 'active',
         });
         setIsEditModalOpen(true);
     };
@@ -300,6 +304,23 @@ export default function WalletsPage() {
                             onChange={(e) => setFormData({ ...formData, maxPendingTx: parseInt(e.target.value) })}
                             required
                         />
+                        <div>
+                            <label className="block text-sm font-medium mb-2 text-white/80">
+                                Wallet Status
+                            </label>
+                            <select
+                                value={formData.status}
+                                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-white/30 focus:outline-none transition-colors"
+                            >
+                                <option value="active">Active</option>
+                                <option value="paused">Paused</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                            <p className="text-xs text-white/40 mt-1.5">
+                                Set to 'Active' to enable sending transactions.
+                            </p>
+                        </div>
                         <div className="flex gap-3 justify-end pt-4">
                             <Button
                                 type="button"

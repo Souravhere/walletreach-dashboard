@@ -67,7 +67,7 @@ export default function NewCampaignPage() {
     const fetchWallets = async () => {
         try {
             const response = await walletsAPI.getAll();
-            setWallets(response.data.wallets.filter((w: any) => w.status === 'active'));
+            setWallets(response.data.wallets);
         } catch (error: any) {
             setError('Failed to fetch wallets');
         }
@@ -280,35 +280,47 @@ export default function NewCampaignPage() {
                                             <div className="text-white/20 mb-2">
                                                 <FiDatabase size={32} className="mx-auto" />
                                             </div>
-                                            <p className="text-white/60 text-sm">No active wallets configured</p>
-                                            <p className="text-white/30 text-xs mt-1">Configure sender wallets before proceeding</p>
+                                            <p className="text-white/60 text-sm">No wallets found</p>
+                                            <p className="text-white/30 text-xs mt-1">Create wallets in the Wallet Manager first</p>
                                         </div>
                                     ) : (
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                             {wallets.map((wallet) => {
                                                 const isSelected = formData.senderWallets.includes(wallet._id);
+                                                const isActive = wallet.status === 'active';
+
                                                 return (
                                                     <label
                                                         key={wallet._id}
-                                                        className={`group cursor-pointer block p-4 border rounded-xl transition-all ${isSelected
-                                                            ? 'bg-white/10 border-white/30'
-                                                            : 'bg-white/[0.02] border-white/10 hover:border-white/20'
+                                                        className={`group block p-4 border rounded-xl transition-all ${!isActive
+                                                            ? 'opacity-60 bg-red-500/5 border-red-500/20 cursor-not-allowed'
+                                                            : isSelected
+                                                                ? 'bg-white/10 border-white/30 cursor-pointer'
+                                                                : 'bg-white/[0.02] border-white/10 hover:border-white/20 cursor-pointer'
                                                             }`}
                                                     >
                                                         <div className="flex items-start gap-3">
                                                             <input
                                                                 type="checkbox"
                                                                 checked={isSelected}
-                                                                onChange={() => handleWalletToggle(wallet._id)}
-                                                                className="mt-0.5 w-4 h-4"
+                                                                onChange={() => isActive && handleWalletToggle(wallet._id)}
+                                                                disabled={!isActive}
+                                                                className="mt-0.5 w-4 h-4 disabled:opacity-50"
                                                             />
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="font-medium text-sm">{wallet.name}</div>
+                                                                <div className="flex items-center justify-between">
+                                                                    <div className="font-medium text-sm">{wallet.name}</div>
+                                                                    {!isActive && (
+                                                                        <span className="text-[10px] font-bold uppercase text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">
+                                                                            {wallet.status}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
                                                                 <div className="text-xs text-white/40 font-mono mt-1 truncate">
                                                                     {wallet.address}
                                                                 </div>
                                                             </div>
-                                                            {isSelected && (
+                                                            {isSelected && isActive && (
                                                                 <FiCheckCircle className="text-white/60 flex-shrink-0" size={16} />
                                                             )}
                                                         </div>
